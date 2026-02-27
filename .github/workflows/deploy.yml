@@ -1,0 +1,44 @@
+name: Auto Deploy to GCP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to GCP Instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: 35.200.235.250
+          username: ${{ secrets.GCP_USERNAME }}
+          key: ${{ secrets.GCP_SSH_KEY }}
+          port: 22
+          script: |
+            cd /var/www/driverx-django || cd ~/driverx-django
+            
+            echo "🔄 Pulling latest changes from main branch..."
+            git fetch origin
+            git checkout main
+            git pull origin main
+            
+            echo "📦 Installing/updating dependencies..."
+            source venv/bin/activate || python3 -m venv venv && source venv/bin/activate
+            pip install -r requirements.txt
+            
+            echo "🗄️ Running database migrations..."
+            python manage.py migrate --noinput
+            
+            echo "📁 Collecting static files..."
+            python manage.py collectstatic --noinput
+            
+            echo "🔄 Restarting application..."
+            sudo systemctl restart gunicorn || sudo systemctl restart driverx || sudo supervisorctl restart driverx || pkill -HUP gunicorn
+            
+            echo "✅ Deployment completed successfully!"
