@@ -39,8 +39,11 @@ DEBUG = True
 
 #ALLOWED_HOSTS = []
 ALLOWED_HOSTS = [
-    'goliteapi.golitemobile.com',
-    '34.100.195.29',
+    '35.200.235.250',
+    '34.186.132.69',
+    'api.driverxmobile.com',
+    'driverxmobile.com',
+    'react.driverxmobile.com',
     'localhost',
     '127.0.0.1',
     'http://127.0.0.1:8000',
