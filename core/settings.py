@@ -51,6 +51,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'jazzmin',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,11 +77,11 @@ INSTALLED_APPS = [
     'django_ckeditor_5',
     'rest_framework',
     'rest_framework.authtoken',
-    'corsheaders',
     'django_filters',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -91,6 +92,11 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
+JAZZMIN_SETTINGS = {
+    "site_title": "DriverX Admin",
+    "site_header": "DriverX",
+    "site_brand": "DriverX Admin",
+}
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
@@ -156,7 +162,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -197,7 +203,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.golitemobile.com",
 ]
 
-#CORS_ALLOW_ALL_ORIGINS = True  # safe for now (you can restrict later)
+CORS_ALLOW_ALL_ORIGINS = True  
 
 CORS_ALLOW_HEADERS = [
     "accept",
