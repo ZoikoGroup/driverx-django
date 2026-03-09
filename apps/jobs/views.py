@@ -15,15 +15,14 @@ class JobListAPI(APIView):
 
         jobs = Job.objects.filter(status=True)
 
-        # filter by tech stack / title / description
+        # filter by search query (tech stack / title)
         if query:
             jobs = jobs.filter(
                 Q(title__icontains=query) |
-                Q(description__icontains=query) |
-                Q(tech_stack__icontains=query)
+                Q(description__icontains=query)
             )
 
-        # filter by location (ignore if "all")
+        # filter by location
         if location and location.lower() != "all":
             jobs = jobs.filter(location__iexact=location)
 
