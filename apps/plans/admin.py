@@ -20,11 +20,10 @@ class PlanAdmin(admin.ModelAdmin):
         "bqPlanID",      # ✅ show in listing
         "category",
         "final_price",
-        "sim_type",
         "is_active",
     )
 
-    list_filter = ("category", "sim_type", "is_active")
+    list_filter = ("category", "is_active")
     search_fields = ("name", "bqPlanID", "short_description")
 
     autocomplete_fields = ("category",)
@@ -50,7 +49,6 @@ class PlanAdmin(admin.ModelAdmin):
                         "sale_price",
                         "price_24",
                         "duration_days",
-                        "sim_type",
                     )
                 }),
                 ("Status", {
