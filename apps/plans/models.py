@@ -26,10 +26,7 @@ class PlanCategory(models.Model):
 
 
 class Plan(models.Model):
-    SIM_TYPE_CHOICES = (
-        ("psim", "pSIM"),
-        ("esim", "eSIM"),
-    )
+    
 
     category = models.ForeignKey(
         PlanCategory,
@@ -75,7 +72,6 @@ class Plan(models.Model):
 )
 
     duration_days = models.PositiveIntegerField()
-    sim_type = models.CharField(max_length=10, choices=SIM_TYPE_CHOICES)
 
     # SEO
     meta_title = models.CharField(max_length=255, blank=True, null=True)
