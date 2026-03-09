@@ -34,7 +34,6 @@ class PlanSerializer(serializers.ModelSerializer):
             "price_24",
             "final_price",
             "duration_days",
-            "sim_type",
 
             # SEO
             "meta_title",
