@@ -41,7 +41,7 @@ class Plan(models.Model):
 
     name = models.CharField(max_length=150)
 
-    vcPlanID = models.CharField(          # ✅ NEW FIELD
+    bqPlanID = models.CharField(          # ✅ NEW FIELD
         max_length=100,
         unique=True,
         blank=True,

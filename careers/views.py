@@ -1,21 +1,31 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.db.models import Q
 from rest_framework.parsers import MultiPartParser, FormParser
 
-from .models import JobApplication
-from .serializers import JobApplicationSerializer
+from .models import JobApplication, Job
+from .serializers import JobApplicationSerializer, JobSerializer
 
 
-class JobApplicationCreateView(APIView):
-    parser_classes = [MultiPartParser, FormParser]  # needed for file/resume upload
+class JobListView(APIView):
 
-    def post(self, request):
-        serializer = JobApplicationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": "Application submitted successfully.", "data": serializer.data},
-                status=status.HTTP_201_CREATED
+    def get(self, request):
+        query = request.GET.get("q", "")
+        location = request.GET.get("location", "")
+
+        jobs = Job.objects.all()
+
+        # filter by job title / description
+        if query:
+            jobs = jobs.filter(
+                Q(title__icontains=query) |
+                Q(description__icontains=query)
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # filter by location
+        if location:
+            jobs = jobs.filter(location__icontains=location)
+
+        serializer = JobSerializer(jobs, many=True)
+        return Response(serializer.data)
