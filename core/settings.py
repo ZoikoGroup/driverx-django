@@ -44,9 +44,10 @@ ALLOWED_HOSTS = [
     'api.driverxmobile.com',
     'driverxmobile.com',
     'react.driverxmobile.com',
-    'localhost',
+    'localhost:3000',
     '127.0.0.1',
     'http://127.0.0.1:8000',
+    '*',
 ]
 
 
@@ -199,12 +200,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "https://golitereact.vercel.app",
-    "https://react.golitemobile.com",
-    "https://lakhan-golite.vercel.app",
-    "https://golitemobile.com",
-    "https://www.golitemobile.com",
+    "https://react.driverxmobile.com",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True  
