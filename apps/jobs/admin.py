@@ -7,7 +7,7 @@ class JobAdmin(admin.ModelAdmin):
 
     list_display = (
         'title',
-        'department',  # 🔥 ADDED
+        'department', 
         'positions',
         'experience',
         'location',
@@ -17,7 +17,7 @@ class JobAdmin(admin.ModelAdmin):
     )
 
     list_filter = (
-        'department',  # 🔥 ADDED
+        'department',  
         'status',
         'location',
         'posted_at'
