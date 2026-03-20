@@ -10,7 +10,7 @@ def contact_api(request):
     if serializer.is_valid():
         serializer.save()
         return Response(
-            {"message": "Message sent successfully "},
+            {"message": "Message sent successfully ✅"},
             status=status.HTTP_201_CREATED
         )
 
