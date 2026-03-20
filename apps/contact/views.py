@@ -8,6 +8,6 @@ class ContactMessageAPI(APIView):
 
         # simple debug response (no DB yet)
         return Response({
-            "message": "Data received successfully",
+            "message": "successful",
             "data": data
         }, status=status.HTTP_200_OK)
