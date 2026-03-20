@@ -1,14 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ContactMessageSerializer
 
 class ContactMessageAPI(APIView):
     def post(self, request):
-        serializer = ContactMessageSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Saved"}, status=201)
-        
-        return Response(serializer.errors, status=400)
+        data = request.data
+
+        # simple debug response (no DB yet)
+        return Response({
+            "message": "successful",
+            "data": data
+        }, status=status.HTTP_200_OK)
