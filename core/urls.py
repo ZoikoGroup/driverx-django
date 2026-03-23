@@ -21,6 +21,7 @@ urlpatterns = [
     path("api/marine-discount/",include("apps.marine_discount.urls")),
     path("api/senior-discount/", include("apps.senior_discount.urls")),
     path("api/v2/order/", include("apps.orders.urls")),
+    path('api/', include('apps.contact.urls')),
 
     path("api/v1/", include("apps.coupons.api_urls")),
     path('api/contact/', include('apps.contact.urls')),

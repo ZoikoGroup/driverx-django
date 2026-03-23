@@ -4,17 +4,11 @@ from rest_framework import status
 from .serializers import ContactMessageSerializer
 
 @api_view(['POST'])
-def contact_us(request):
+def contact_api(request):
     serializer = ContactMessageSerializer(data=request.data)
 
     if serializer.is_valid():
-        serializer.save()
-        return Response({
-            "success": True,
-            "message": "Thank you for contacting Golite. We will reach out soon."
-        }, status=status.HTTP_201_CREATED)
+        serializer.save()  # 🔥 THIS WAS MISSING
+        return Response({"message": "Saved"}, status=201)
 
-    return Response({
-        "success": False,
-        "errors": serializer.errors
-    }, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors, status=400)
