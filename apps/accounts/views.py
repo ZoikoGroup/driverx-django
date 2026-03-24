@@ -124,7 +124,14 @@ class LoginAPI(APIView):
         return Response({
             "message": "Login successful",
             "token": token.key,
-            "user": user_data
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "bq_enrollment_id": getattr(user.profile, "bq_enrollment_id", None),
+            }
         })
 
 
