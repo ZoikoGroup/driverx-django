@@ -85,15 +85,15 @@ class ResetPasswordSerializer(serializers.Serializer):
 
 # serializers.py
 class UpdateUserSerializer(serializers.ModelSerializer):
-    vc_enrollment_id = serializers.CharField(
-        source='profile.vc_enrollment_id',  # points to profile model
+    bq_enrollment_id = serializers.CharField(
+        source='profile.bq_enrollment_id',  # points to profile model
         required=False,
         allow_blank=True
     )
 
     class Meta:
         model = User
-        fields = ["username", "email", "first_name", "last_name", "vc_enrollment_id"]
+        fields = ["username", "email", "first_name", "last_name", "bq_enrollment_id"]
 
     def validate_email(self, value):
         user = self.context['request'].user
@@ -103,14 +103,14 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', {})
-        vc_id = profile_data.get('vc_enrollment_id')
+        vc_id = profile_data.get('bq_enrollment_id')
 
         # Update User fields
         instance = super().update(instance, validated_data)
 
         # Update VC ID if provided
         if vc_id is not None:
-            instance.profile.vc_enrollment_id = vc_id
+            instance.profile.bq_enrollment_id = vc_id
             instance.profile.save()
 
         return instance
