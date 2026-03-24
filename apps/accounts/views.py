@@ -119,7 +119,7 @@ class LoginAPI(APIView):
         }
 
         # Add VC ID
-        user_data['vc_enrollment_id'] = getattr(user.profile, 'vc_enrollment_id', None)
+        user_data['bq_enrollment_id'] = getattr(user.profile, 'bq_enrollment_id', None)
 
         return Response({
             "message": "Login successful",
@@ -242,9 +242,9 @@ class UpdateUserAPI(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        # Include vc_enrollment_id in response
+        # Include bq_enrollment_id in response
         response_data = serializer.data
-        response_data['vc_enrollment_id'] = getattr(request.user.profile, 'vc_enrollment_id', None)
+        response_data['bq_enrollment_id'] = getattr(request.user.profile, 'bq_enrollment_id', None)
 
         return Response({
             "message": "Profile updated successfully",
@@ -286,7 +286,7 @@ class SocialUserAPI(APIView):
         }
 
         # Add VC ID (same as login)
-        user_data['vc_enrollment_id'] = getattr(user.profile, 'vc_enrollment_id', None)
+        user_data['bq_enrollment_id'] = getattr(user.profile, 'bq_enrollment_id', None)
 
         return Response({
             "message": "Social login successful",
