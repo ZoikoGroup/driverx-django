@@ -1,13 +1,14 @@
 from rest_framework import serializers
-from .models import VCareOrder
+from .models import BqOrder
 import json
 
-class VCareOrderSerializer(serializers.ModelSerializer):
+
+class BqOrderSerializer(serializers.ModelSerializer):
     parsed_raw_data = serializers.SerializerMethodField()
 
     class Meta:
-        model = VCareOrder
-        fields = "__all__"   # existing remains SAME
+        model = BqOrder
+        fields = "__all__"
 
     def get_parsed_raw_data(self, obj):
         try:

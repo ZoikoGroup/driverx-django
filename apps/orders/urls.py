@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import (
-    VCareOrderCreateAPIView,
-    VCareUserGroupedOrdersAPIView
+    BqOrderCreateAPIView,
+    BqUserGroupedOrdersAPIView,
 )
 
 urlpatterns = [
-    path("create", VCareOrderCreateAPIView.as_view()),
-    path("by-user", VCareUserGroupedOrdersAPIView.as_view()),
+    path("bqorders/", BqOrderCreateAPIView.as_view(), name="bqorders_create"),
+    path("bqorders/by-user/", BqUserGroupedOrdersAPIView.as_view(), name="bqorders_by_user"),
 ]
