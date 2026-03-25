@@ -68,56 +68,29 @@ class CouponPreviewAPI(APIView):
 
 class CouponApplyAPI(APIView):
     """
-    Apply coupon (DB WRITE)
+    Apply coupon - preview only, no DB write at this stage
     """
-
     def post(self, request):
         serializer = CouponApplySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        code = serializer.validated_data["code"]
-        amount = serializer.validated_data["amount"]
-        order_id = serializer.validated_data["order_id"]
+        coupon_code = serializer.validated_data["coupon_code"]  # ← fixed
         plan_id = serializer.validated_data.get("plan_id")
 
-        coupon = get_coupon_by_code(code)
-        plan = Plan.objects.filter(id=plan_id).first() if plan_id else None
+        coupon = get_coupon_by_code(coupon_code)
 
-        # ❌ Prevent duplicate order usage
-        if CouponUsage.objects.filter(coupon=coupon, order_id=order_id).exists():
-            return Response(
-                {"error": "Coupon already applied to this order"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        valid, message, discount = validate_coupon(
-            coupon=coupon,
-            user=request.user if request.user.is_authenticated else None,
-            amount=amount,
-            plan=plan
-        )
-
+        valid, message = coupon.is_valid()
         if not valid:
             return Response(
-                {"error": message},
+                {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
-        # ✅ Save usage
-        CouponUsage.objects.create(
-            coupon=coupon,
-            user=request.user if request.user.is_authenticated else None,
-            order_id=order_id
-        )
-
-        # ✅ Increment usage count
-        coupon.used_count += 1
-        coupon.save(update_fields=["used_count"])
 
         return Response({
             "success": True,
-            "coupon": coupon.name,
-            "discount": discount,
-            "final_amount": max(float(amount) - discount, 0),
-            "order_id": order_id
+            "data": {
+                "type": coupon.type,
+                "discount": str(coupon.discount),
+            },
+            "message": f"Coupon applied! {'{}%'.format(coupon.discount) if coupon.type == 'percentage' else '${}'.format(coupon.discount)} off"
         })
