@@ -6,7 +6,9 @@ class CouponPreviewSerializer(serializers.Serializer):
 
 
 class CouponApplySerializer(serializers.Serializer):
-    code = serializers.CharField()
-    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
-    order_id = serializers.CharField()
+    coupon_code = serializers.CharField()          # renamed from "code"
+    user_id = serializers.IntegerField(required=False)
+    email = serializers.EmailField(required=False)
+    # amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+    # order_id = serializers.CharField()
     plan_id = serializers.IntegerField(required=False)
