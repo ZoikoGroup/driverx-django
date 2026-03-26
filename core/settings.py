@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'apps.blog',
-    'apps.products',
     'apps.accounts',
     'apps.plans',
     'apps.coupons',
@@ -83,6 +82,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+    "apps.products",
 ]
 
 MIDDLEWARE = [
