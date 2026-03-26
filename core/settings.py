@@ -44,10 +44,9 @@ ALLOWED_HOSTS = [
     'api.driverxmobile.com',
     'driverxmobile.com',
     'react.driverxmobile.com',
-    'localhost:3000',
+    'localhost',
     '127.0.0.1',
     'http://127.0.0.1:8000',
-    '*',
 ]
 
 
@@ -55,7 +54,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'jazzmin',
-    'apps.careers',
+
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -65,16 +64,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'apps.blog',
+    'apps.contact',
+    'apps.products',
     'apps.accounts',
     'apps.plans',
     'apps.coupons',
+    'apps.careers',
     'apps.student_discount',
     'apps.first_responder',
     'apps.military_discount',
     'apps.marine_discount',
     'apps.senior_discount',
     'apps.orders',
-    'apps.contact',
     'apps.newsletter',
     'apps.jobs',
     'apps.search',
@@ -82,7 +83,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
-    "apps.products",
 ]
 
 MIDDLEWARE = [
@@ -200,7 +200,12 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://react.driverxmobile.com",
+    "http://localhost:5173",
+    "https://golitereact.vercel.app",
+    "https://react.golitemobile.com",
+    "https://lakhan-golite.vercel.app",
+    "https://golitemobile.com",
+    "https://www.golitemobile.com",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True  
