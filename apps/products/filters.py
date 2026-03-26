@@ -3,44 +3,36 @@ from .models import Product
 
 
 class ProductFilter(django_filters.FilterSet):
-
-    category = django_filters.CharFilter(
-        field_name='category__slug',
-        lookup_expr='iexact'
-    )
-
     min_price = django_filters.NumberFilter(
-        field_name='variants__regular_price',
-        lookup_expr='gte'
+        field_name="variants__price", lookup_expr="gte", distinct=True
     )
-
     max_price = django_filters.NumberFilter(
-        field_name='variants__regular_price',
-        lookup_expr='lte'
+        field_name="variants__price", lookup_expr="lte", distinct=True
     )
+    brand = django_filters.CharFilter(field_name="brand", lookup_expr="icontains")
+    category = django_filters.CharFilter(field_name="category__slug")
 
-    colour = django_filters.CharFilter(
-        field_name='variants__colour',
-        lookup_expr='iexact'
-    )
+    # Dynamic attribute filtering: ?attr_storage=256gb or ?attr_color=black
+    # Works for ANY attribute slug without code changes
+    def __init__(self, data=None, *args, **kwargs):
+        super().__init__(data, *args, **kwargs)
+        if data:
+            for key in data:
+                if key.startswith("attr_"):
+                    attr_slug = key[5:]  # strip "attr_"
+                    self.filters[key] = django_filters.CharFilter(
+                        method=self._make_attr_filter(attr_slug)
+                    )
 
-    condition = django_filters.CharFilter(
-        field_name='variants__condition',
-        lookup_expr='iexact'
-    )
-
-    storage = django_filters.CharFilter(
-        field_name='variants__storage',
-        lookup_expr='iexact'
-    )
+    @staticmethod
+    def _make_attr_filter(attr_slug):
+        def filter_fn(queryset, name, value):
+            return queryset.filter(
+                variants__variant_attributes__attribute_value__slug=value,
+                variants__variant_attributes__attribute_value__attribute__slug=attr_slug,
+            ).distinct()
+        return filter_fn
 
     class Meta:
         model = Product
-        fields = [
-            'category',
-            'min_price',
-            'max_price',
-            'colour',
-            'condition',
-            'storage',
-        ]
+        fields = ["brand", "category", "min_price", "max_price"]

@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.plans',
     'apps.coupons',
-        'apps.careers',
+    'apps.careers',
     'apps.student_discount',
     'apps.first_responder',
     'apps.military_discount',

@@ -8,11 +8,11 @@ def home(request):
     return HttpResponse("DriverX Django API is running")
 
 urlpatterns = [
-    path('', home),  # 👈 ROOT URL
+    path('', home),
     path('admin/', admin.site.urls),
     path('ckeditor5/', include('django_ckeditor_5.urls')),
     path('api/blog/', include('apps.blog.api_urls', namespace='blog_api')),
-    path('api/products/', include('apps.products.api_urls', namespace='products_api')),
+    path('api/products/', include('apps.products.api_urls', namespace='products_api')),  # Keep this one
     path('api/plans/', include('apps.plans.api_urls')),
     path('api/accounts/', include('apps.accounts.urls')),
     path("api/students/", include("apps.student_discount.urls")),
@@ -28,10 +28,10 @@ urlpatterns = [
     path('api/contact/', include('apps.contact.urls')),
     path('api/newsletter/', include('apps.newsletter.urls')),
     path('jobs/', include('apps.jobs.urls')),
- path('careers/', include('apps.careers.urls')),
+    path('careers/', include('apps.careers.urls')),
     path('search/', include('apps.search.urls')),
-
-    #path('api/v1/', include('apps.coupons.urls')),
+    # # path("api/products/", include("apps.products.urls")),  # Duplicate - commented out  # ← Remove/comment this duplicate line
+    # path('api/v1/', include('apps.coupons.urls')),
 ]
 
 if settings.DEBUG:
