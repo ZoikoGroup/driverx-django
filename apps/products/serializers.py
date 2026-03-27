@@ -77,11 +77,54 @@ class ProductListSerializer(serializers.ModelSerializer):
     price_min = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     price_max = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
+    # 👇 ADD THIS LINE
+    attributes = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
         fields = [
             "id", "name", "slug", "category", "brand",
             "price_min", "price_max", "primary_image", "is_featured",
+            "attributes",  # 👈 ADD THIS
+        ]
+
+    def get_primary_image(self, obj):
+        img = obj.images.filter(is_primary=True).first() or obj.images.first()
+        if img:
+            request = self.context.get("request")
+            return request.build_absolute_uri(img.image.url) if request else img.image.url
+        return None
+
+    # 👇 ADD THIS FUNCTION HERE (INSIDE SAME CLASS)
+    def get_attributes(self, obj):
+        attr_map = {}
+
+        for variant in obj.variants.all():
+            for va in variant.variant_attributes.all():
+                name = va.attribute_value.attribute.name
+                value = va.attribute_value.value
+
+                if name not in attr_map:
+                    attr_map[name] = set()
+
+                attr_map[name].add(value)
+
+        return [
+            {"name": k, "values": list(v)}
+            for k, v in attr_map.items()
+        ]
+    primary_image = serializers.SerializerMethodField()
+    category = CategorySerializer(read_only=True)
+    price_min = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    price_max = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    attributes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = [
+            "id", "name", "slug", "category", "brand",
+            "price_min", "price_max", "primary_image", "is_featured",
+            "attributes",
         ]
 
     def get_primary_image(self, obj):
@@ -145,3 +188,40 @@ class ProductDetailSerializer(serializers.ModelSerializer):
                 "options": list(values),
             })
         return result
+    
+class ProductSerializer(serializers.ModelSerializer):
+    variants = ProductVariantSerializer(many=True, read_only=True)
+    attributes = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = [
+            'id',
+            'name',
+            'slug',
+            'category',
+            'brand',
+            'price_min',
+            'price_max',
+            'primary_image',
+            'is_featured',
+            'attributes',   # 👈 NEW
+            'variants'      # 👈 NEW
+        ]
+    def get_attributes(self, obj):
+        attr_map = {}
+
+        for variant in obj.variants.all():
+            for va in variant.variant_attributes.all():
+                name = va.attribute_value.attribute.name
+                value = va.attribute_value.value
+
+                if name not in attr_map:
+                    attr_map[name] = set()
+
+                attr_map[name].add(value)
+
+        return [
+            {"name": k, "values": list(v)}
+            for k, v in attr_map.items()
+        ]
