@@ -18,7 +18,7 @@ class CategoryListView(generics.ListAPIView):
 class ProductListView(generics.ListAPIView):
     queryset = (
         Product.objects.filter(is_active=True)
-        .prefetch_related("images", "variants", "attributes")
+        .prefetch_related("images", "variants__variant_attributes__attribute_value__attribute")
         .select_related("category")
     )
     serializer_class = ProductListSerializer
