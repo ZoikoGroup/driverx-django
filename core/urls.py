@@ -32,6 +32,7 @@ urlpatterns = [
     path('search/', include('apps.search.urls')),
     # # path("api/products/", include("apps.products.urls")),  # Duplicate - commented out  # ← Remove/comment this duplicate line
     # path('api/v1/', include('apps.coupons.urls')),
+    path('api/form/', include('apps.forms_api.urls')),
 ]
 
 if settings.DEBUG:
