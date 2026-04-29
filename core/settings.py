@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'django_filters',
     'apps.forms_api',
     'apps.demo_api',
+    'apps.editprofile',
 ]
 
 MIDDLEWARE = [
