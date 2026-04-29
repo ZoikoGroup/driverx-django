@@ -34,6 +34,7 @@ urlpatterns = [
     # path('api/v1/', include('apps.coupons.urls')),
     path('api/form/', include('apps.forms_api.urls')),
     path('api/form/', include('apps.demo_api.urls')),
+    path('api/editprofile/', include('apps.editprofile.urls')),
 ]
 
 if settings.DEBUG:
